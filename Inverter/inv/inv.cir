@@ -1,0 +1,69 @@
+* Include the corner file (SS - Slow NMOS / Slow PMOS for your first case)
+.include /modelfile_65nm/minNminP.cir  ; 
+
+*simulation
+*Eldo is case insensitive
+*Comment is done in new line using * option
+
+* include the corner file to be used TT/SS/SF/FF/FS
+.include /modelfile_65nm/minNminP.cir
+
+*Inculde the source netlist (exported from cadence)
+.include inv.src.net
+
+*Instantiate the inverter as in the netlist file
+
+X1 gnd Vin Vout Vdd inv
+
+*You can choose to make some parameters
+.param SUPPLY = 1.08
+.param tend = 150n
+*.param wp = 0.2
+.TEMP = 125
+
+C vout gnd 20f
+
+*Give input to the netlist
+vd vdd 0 SUPPLY
+vg gnd 0 0
+* (low_voltage high_voltage starting_delay rise_time fall_time on_pulse_width time_period)
+v1 vin gnd PULSE (0 1.08 0 20p 20p 5n 10n)
+
+*Specify which all outputs you want to see, Here all voltages and currents specified
+.probe v(*) v(X1.*)
+.probe i(*)
+
+* rising propagation delay
+*tplh is rise delay and tphl is fall delay at the output
+
+.measure tran tplh
++ TRIG v(vin) VAL='SUPPLY/2' FALL=1
++ TARG v(vout) VAL='SUPPLY/2' RISE=1
+
+*falling propagation delay
+*The trigger and targate varies according to which transition you want to calculate the delay.
+.measure tran tphl
++ TRIG v(vin) VAL='SUPPLY/2' RISE=1
++ TARG v(vout) VAL='SUPPLY/2' FALL=1
+
+.measure tran tfall
++ TRIG v(vout) VAL='0.8*SUPPLY' FALL=1
++ TARG v(vout) VAL='0.2*SUPPLY' FALL=1
+
+.measure tran trise
++ TRIG v(vout) VAL='0.2*SUPPLY' RISE=1
++ TARG v(vout) VAL='0.8*SUPPLY' RISE=1
+
+*delay calculation from tphl and tplh
+.measure delay param = ('tplh+tphl'/2)
+
+
+*.PLOT TRANS V(vin) VERSUS V(vin)
+
+.tran 1p tend
+*.tran 10p tend sweep wp 0.2 15 0.05
+*.dc V1 0 SUPPLY 0.01
+*.plot extract V(vin) V(vout)
+*.endc
+
+.end

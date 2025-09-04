@@ -1,0 +1,32 @@
+* Top Cell Name: inv
+* View Name:     schematic
+* Netlisted on:  Aug 31 16:13:37 2025
+************************************************************************
+
+*.BIPOLAR
+*.RESI = 2000 
+*.RESVAL
+*.CAPVAL
+*.DIOPERI
+*.DIOAREA
+*.EQUATION
+*.SCALE METER
+*.MEGA
+.PARAM
+
+
+
+************************************************************************
+* Library Name: lab
+* Cell Name:    inv
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT inv gnd in out vdd
+*.PININFO in:I vdd:I out:O gnd:B
+XM0 out in vdd vdd psvtlp w=4.726 l=0.06 nfing=7 sense=0 ngcon=1 m=1 
++ accurateFlow=0
+XM1 out in gnd gnd nsvtlp w=2.446 l=0.06 nfing=7 sense=0 ngcon=1 m=1 
++ accurateFlow=0
+.ENDS
+

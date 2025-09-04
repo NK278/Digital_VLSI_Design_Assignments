@@ -1,0 +1,4 @@
+START report: Sun Aug 31 17:30:52 2025 
+** Warning: (eldo - 255)  In file "/usr/local/cmos065_536/DK_cmos065lpgp_7m4x0y2z_2V51V8@5.3.6/DATA/ELDO/CORNERS/LPmos_bsim4_svt.lib" line 1079:
++   OBJECT "X1.XM1.M1":  Size not consistent with LMIN/LMAX/WMIN/WMAX/TEMPMIN/TEMPMAX specification.
++    w (3.857143e-02u) is lower than wmin (1.200000e-01u)
